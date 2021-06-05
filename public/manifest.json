@@ -1,0 +1,9 @@
+{
+  "short_name": "archeun - leggilo",
+  "name": "leggilo - a link sharing app",
+  "icons": [],
+  "start_url": ".",
+  "display": "standalone",
+  "theme_color": "#000000",
+  "background_color": "#ffffff"
+}
