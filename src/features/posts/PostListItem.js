@@ -6,11 +6,11 @@ export const PostListItem = (props) => {
     const post = props.post;
     return (
         <List.Item
-            key={post.title}
+            key={post.id}
             actions={getActionItems(post)}
             extra={getExtra(post)}>
-            <List.Item.Meta avatar={getAvatar(post)} title={getTitle(post)} description={getDescription(post)}/>
-            {post.description}
+            <List.Item.Meta avatar={getAvatar(post)} title={getTitle(post)} description={getDescriptionForTitle(post)}/>
+            {getProcessedDescription(post.description)}
         </List.Item>
     );
 }
@@ -20,19 +20,32 @@ const getAvatar = (post) => {
 }
 
 const getExtra = (post) => {
-    return post.image ? <img width={272} alt={post.title} src={post.image}/> : '';
+    return post.image ? <img width={272} alt={post.title} src={post.image.replace('amp;', '')}/> : '';
 }
 
 const getTitle = (post) => {
     return <a target='_blank' rel='noreferrer' href={post.link}>{post.title}</a>;
 }
 
-const getDescription = (post) => {
-    const tags = post.tags.slice(0, 5).map(tag => <Tag icon={<MinusCircleOutlined/>} color="default">{tag}</Tag>);
+const getProcessedDescription = (description) => {
+    return description.replace(/(<([^>]+)>)/ig, '');
+}
+
+const getDescriptionForTitle = (post) => {
+    const tags = post.tags.slice(0, 5).map(tag => <Tag key={tag} icon={<MinusCircleOutlined/>}
+                                                       color="default">{tag}</Tag>);
     const moreText = post.tags.length > 5 ? `+${(post.tags.length - tags.length)} more` : '';
+    let subtitle = '';
+    if (post.author && post.date) {
+        subtitle = `${post.author} | ${post.date}`;
+    } else if (post.author) {
+        subtitle = post.author;
+    } else if (post.date) {
+        subtitle = post.date;
+    }
     return (
         <div>
-            <span>{`${post.author} | ${post.date}`}</span><span> {tags} {moreText}</span>
+            <span>{subtitle}</span><span> {tags} {moreText}</span>
         </div>
     );
 }
