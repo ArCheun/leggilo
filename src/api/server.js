@@ -1,21 +1,18 @@
-import posts from "../features/posts/posts";
-import providers from "../features/providers/providers";
+const axios = require('axios');
+const SERVER_URI = process.env.REACT_APP_SERVER_URL;
 
-const fetchPostsOfProviders = (providerIds) => {
-    const filteredPosts = posts.filter((post) => providerIds.indexOf(post.providerId) !== -1);
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(filteredPosts);
-        }, 1500);
-    });
+const fetchPostsOfProviders = async (providerIds) => {
+    let posts = [];
+    for (const providerId of providerIds) {
+        const response = await axios.get(`${SERVER_URI}/fetch?providerId=${providerId}`);
+        posts = posts.concat(response.data);
+    }
+    return posts;
 };
 
-const fetchProviders = () => {
-    return new Promise((resolve, reject) => {
-        setTimeout(() => {
-            resolve(providers);
-        }, 1500);
-    });
+const fetchProviders = async () => {
+    const response = await axios.get(`${SERVER_URI}/fetch?mode=providers`);
+    return response.data;
 };
 
 const server = {

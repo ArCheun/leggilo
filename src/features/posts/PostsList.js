@@ -3,6 +3,7 @@ import {useSelector} from "react-redux";
 import {List, message} from "antd";
 import {postListLoadingStatusSelector, selectAllPosts} from "./postsSlice";
 import LoadingStatus from "../../util/loadingStatus";
+import {PostListItem} from "./PostListItem";
 
 export const PostsList = () => {
 
@@ -17,14 +18,12 @@ export const PostsList = () => {
 
     return (
         <List
-            itemLayout="horizontal"
-            dataSource={posts}
+            itemLayout="vertical"
+            size="large"
             loading={loadingStatus === LoadingStatus.loading}
-            renderItem={post => (
-                <List.Item>
-                    <List.Item.Meta title={<a href={post.url}>{post.title}</a>} description={post.content}/>
-                </List.Item>
-            )}
+            dataSource={posts}
+            pagination={posts.length > 10 ? {pageSize: 10} : null}
+            renderItem={post => (<PostListItem post={post}/>)}
         />
     );
-}
+};

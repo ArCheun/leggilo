@@ -9,7 +9,7 @@ import LoadingStatus from "../../util/loadingStatus";
 import {Meta} from "antd/es/list/Item";
 
 const {Option} = Select;
-
+const maxProviderCountToSelect = 3;
 export const PostsFilter = () => {
 
     const providers = useSelector(fetchAllProviders);
@@ -22,9 +22,12 @@ export const PostsFilter = () => {
         provider => <Option key={provider.id} value={provider.id}>{provider.name}</Option>
     );
 
-    const onSelectedProviderIdsChange = (selectedProviderIds) => dispatch(
-        filtersChanged({selectedProviderIds: selectedProviderIds})
-    );
+    const onSelectedProviderIdsChange = (selectedProviderIds) => {
+        if (selectedProviderIds.length > 3) {
+            message.warn(`Maximum ${maxProviderCountToSelect} providers are allowed to select`);
+        }
+        dispatch(filtersChanged({selectedProviderIds: selectedProviderIds}));
+    };
 
     const onFetchButtonClick = () => {
         dispatch(fetchPosts(providerIds));
@@ -53,8 +56,12 @@ export const PostsFilter = () => {
                             onChange={onSelectedProviderIdsChange}>
                             {providerOptions}
                         </Select>
-                        <Button icon={<DownloadOutlined/>} size="large" onClick={onFetchButtonClick}>Fetch
-                            Posts</Button>
+                        <Button icon={<DownloadOutlined/>}
+                                size="large"
+                                disabled={providerIds.length > maxProviderCountToSelect}
+                                onClick={onFetchButtonClick}>
+                            Fetch Posts
+                        </Button>
                     </div>
                 }
             />
