@@ -1,0 +1,27 @@
+#lglo-app-container .logo {
+    margin-left: 22%;
+    margin-top: 10px;
+}
+
+#lglo-app-container .logo-icon {
+    margin-left: 15%;
+}
+
+#lglo-app-layout {
+    min-height: 100vh;
+}
+
+#lglo-app-content {
+    margin-left: 8%;
+    margin-top: 10px;
+    background-color: #ffffff;
+}
+
+#lglo-app-post-list-container {
+    padding: 25px;
+    min-height: 85vh;
+}
+
+#lglo-app-footer {
+    text-align: center;
+}
